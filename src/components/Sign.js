@@ -85,7 +85,11 @@ const Sign = () => {
                       createUserProfileDocument(user, {
                         photoURL: user.photoURL,
                       });
-                      history.push("/prototype");
+                      if (user.accountId) {
+                        history.push("/prototype");
+                      } else {
+                        history.push("/createAccount");
+                      }
                     })
                   );
                 }}

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ConfigProvider } from "react-avatar";
 import { ToastContainer } from "react-toastify";
+import CreateAccount from "./pages/CreateAccount";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
                   <Home />
                 </Route>
                 <ProtectedRoute path="/prototype" component={Prototype} />
+                <Route path="/createAccount" component={CreateAccount} />
                 <Route path="/login">
                   <Login />
                 </Route>
