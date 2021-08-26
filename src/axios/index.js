@@ -1,14 +1,43 @@
+import AxiosInstance from "./instance"
+
 // Make account holder for every user
-formID
+export const createAccountHolder = (payload) => {
+  AxiosInstance.post('/applications/newIndividual', payload)
+  .then(function (response) {
+    // handle success
+    console.log(response);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+}
 
 // Assign a bundle to every account holder
-
-// Get accounts by account holders
+// Will return accountID
+export const assignBundleToAccountHolder = (payload) => {
+  AxiosInstance.post(`/accountHolders/${payload.accountHolderID}`, payload)
+  .then(function (response) {
+    // handle success
+    console.log(response);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+}
 
 // Account To Account Transfer
+export const transferMoney = (payload) => {
+  AxiosInstance.post("/transfers", payload)
+  .then(function (response) {
+    // handle success
+    console.log(response);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+}
 
 // For passing the money from us (middleman) to the provider
-
-curl -X 'GET' \
-  'https://fusion.tech{fusion_base_url}/bundles/97400c5f-7af2-48fb-b69b-4ffcab4d851d' \
-  -H 'accept: application/json; charset=utf-8'
