@@ -2,11 +2,11 @@ export const createAccountHolderObject = ({
   firstName,
   lastName,
   aadhaarNo,
-  email
+  email,
 }) => {
   return {
     ifiID: "140793",
-    spoolID: "3deb5a70-311c-11ea-978f-2e728ce88125",
+    spoolID: "123",
     individualType: "REAL",
     firstName: firstName,
     lastName: lastName,
@@ -15,14 +15,16 @@ export const createAccountHolderObject = ({
       kycStatus: "MINIMAL",
       kycStatusPostExpiry: "string",
       kycAttributes: {},
-      authData: { AADHAR: aadhaarNo },
-      authType: "AADHAR"
+      authData: { AADHAAR: aadhaarNo },
+      authType: "AADHAAR",
     },
-    vectors: [{ type: "e", value: email, isVerified: true }],
+    vectors: [
+      { type: "e", value: "salik.ansari6@gmail.com", isVerified: false },
+    ],
     pops: [],
     customFields: { companyID: [1, 2, 3] },
     tags: [{ type: "vbo", value: "swiggy", isVerified: true }],
-    source: "postman"
+    // source: "postman",
   };
 };
 
@@ -30,7 +32,7 @@ export const assignBundleToAccountHolderObject = ({ accountHolderID }) => {
   return {
     ifiID: "140793",
     accountHolderID: accountHolderID,
-    name: "Fintechwalletbundle9adcf36"
+    name: "Fintechwalletbundle9adcf36",
   };
 };
 
@@ -40,19 +42,19 @@ export const transferMoneyObject = ({
   debitAccountID,
   creditAccountID,
   transferTime,
-  remarks
+  remarks,
 }) => {
   return {
     requestID: requestID,
     amount: {
       currency: "INR",
-      amount: amount
+      amount: amount,
     },
     transferCode: "ATLAS_P2M_AUTH",
     debitAccountID: debitAccountID,
     creditAccountID: creditAccountID,
     transferTime: transferTime,
     remarks: remarks,
-    attributes: {}
+    attributes: {},
   };
 };
