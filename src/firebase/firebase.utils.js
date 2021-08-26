@@ -46,6 +46,10 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+export const updateUser = async (userID, params) => {
+  return db.collection("users").doc(userID).update(params);
+};
+
 export const getBills = (email) => {
   return db
     .collection("bills")
