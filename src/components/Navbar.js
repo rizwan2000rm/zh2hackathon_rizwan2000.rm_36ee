@@ -11,27 +11,36 @@ import {
   House,
   PlusCircle,
   ListDashes,
-  CheckSquareOffset
+  CheckSquareOffset,
 } from "phosphor-react";
 import "react-toastify/dist/ReactToastify.css";
 import SplitteraLogo from "../assets/logos/SplitteraLogo";
 
 const modalOverlayStyle = {
   backgroundColor: "rgba(0, 0, 0, 0.2)",
-  backdropFilter: "blur(1px)"
+  backdropFilter: "blur(1px)",
 };
 
 const Navbar = () => {
-  const [vendor, setVendor] = useState("");
+  const [vendor, setVendor] = useState([]);
   const [amount, setAmount] = useState();
   const { authUser } = useContext(AuthUserContext);
 
   // REACT SELECT
   const [value, setValue] = useState([]);
+  const [vendorInputValue, setVendorInputValue] = useState(false);
   const [inputValue, setInputValue] = useState(false);
 
   const handleChange = (value, actionMeta) => {
     setValue(value);
+  };
+
+  const handleVendorChange = (value, actionMeta) => {
+    setVendor(value);
+  };
+
+  const handleVendorInputChange = (vendorInputValue) => {
+    setVendorInputValue(vendorInputValue);
   };
 
   const handleInputChange = (inputValue) => {
@@ -48,7 +57,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
       return;
     }
@@ -60,7 +69,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
       return;
     }
@@ -73,7 +82,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
       return;
     }
@@ -92,7 +101,7 @@ const Navbar = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined
+          progress: undefined,
         });
       })
       .catch((err) => {
@@ -103,7 +112,7 @@ const Navbar = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined
+          progress: undefined,
         });
       });
   };
@@ -114,7 +123,7 @@ const Navbar = () => {
         .map((doc) => {
           return {
             value: doc.data().email,
-            label: doc.data().email
+            label: doc.data().email,
           };
         })
         //filtering the users which do not match the current authenticated user
@@ -126,19 +135,51 @@ const Navbar = () => {
     });
   };
 
+  const fetchVendors = (vendorInputValue, callback) => {
+    db.collection("vendors").onSnapshot((snapshot) => {
+      const newVendors = snapshot.docs.map((doc) => {
+        return {
+          value: {
+            name: doc.data().name,
+            accountID: doc.data().accountID,
+          },
+          label: doc.data().name,
+        };
+      });
+      if (!vendorInputValue) {
+        callback(newVendors);
+      }
+      callback(
+        newVendors.filter((vendor) =>
+          vendor.label.toLowerCase().startsWith(vendorInputValue.toLowerCase())
+        )
+      );
+    });
+  };
+
+  const defaultVendorOptions = [
+    {
+      value: {
+        name: "Sagar Restaurant",
+        accountID: "eed3940f-faaa-4cb5-ac09-44e4db3294ea",
+      },
+      label: "Sagar Restaurant",
+    },
+  ];
+
   const defaultOptions = [
     {
       value: "rizwan2000.rm@gmail.com",
-      label: "rizwan2000.rm@gmail.com"
+      label: "rizwan2000.rm@gmail.com",
     },
     {
       value: "saistashaikh2019@gmail.com",
-      label: "saistashaikh2019@gmail.com"
+      label: "saistashaikh2019@gmail.com",
     },
     {
       value: "salik.ansari6@gmail.com",
-      label: "salik.ansari6@gmail.com"
-    }
+      label: "salik.ansari6@gmail.com",
+    },
   ];
 
   return (
@@ -185,14 +226,18 @@ const Navbar = () => {
                   onSubmit={(e) => handleSubmit(e, close)}
                   className="flex flex-col"
                 >
-                  <input
-                    type="text"
+                  <AsyncSelect
+                    // components={components}
+                    onChange={handleVendorChange}
+                    defaultOptions={defaultVendorOptions}
+                    onInputChange={handleVendorInputChange}
+                    loadOptions={fetchVendors}
+                    isClearable
+                    // isMulti
                     value={vendor}
-                    onChange={(e) => {
-                      setVendor(e.target.value);
-                    }}
-                    placeholder="Vendor"
-                    className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
+                    inputValue={vendorInputValue}
+                    placeholder="Enter users email to split with..."
+                    className="w-full mb-6 bg-gray-100 rounded-lg shadow-sm text-sm"
                   />
                   <input
                     value={amount}
