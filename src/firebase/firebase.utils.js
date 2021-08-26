@@ -34,8 +34,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        accountHolderId:null,
-        accountId:null,
+        accountHolderId: null,
+        accountId: null,
         ...additionalData,
       });
     } catch (error) {
@@ -58,7 +58,8 @@ export const addBill = async (vendor, amount, userEmails, authUser) => {
   if (authUser) {
     return db.collection("bills").add({
       createdAt: firebase.firestore.Timestamp.now(),
-      name: vendor,
+      name: vendor.name,
+      accountID: vendor.accountID,
       creatorEmail: authUser.email,
       creatorId: authUser.uid,
       totalAmount: amount,

@@ -36,6 +36,7 @@ const Navbar = () => {
   };
 
   const handleVendorChange = (value, actionMeta) => {
+    console.log(vendor);
     setVendor(value);
   };
 
@@ -88,7 +89,7 @@ const Navbar = () => {
     }
 
     const userEmails = value.map((email) => email.value);
-    addBill(vendor, amount, userEmails, authUser)
+    addBill(vendor.value, amount, userEmails, authUser)
       .then(() => {
         close();
         setVendor("");
@@ -105,6 +106,7 @@ const Navbar = () => {
         });
       })
       .catch((err) => {
+        console.log(err);
         toast.error("Bill Creation failed", {
           position: "bottom-right",
           autoClose: 3000,
