@@ -87,7 +87,7 @@ const Sign = () => {
                         photoURL: user.photoURL,
                       });
                       getUserById(user.uid).then((user) => {
-                        if (user.data().accountID) {
+                        if (user.data().accountID !== undefined || null) {
                           history.push("/prototype");
                         } else {
                           history.push("/createAccount");
