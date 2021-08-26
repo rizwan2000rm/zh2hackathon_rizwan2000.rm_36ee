@@ -4,10 +4,10 @@ import { AuthUserContextProvider } from "./context/AuthUserContext";
 import Home from "./pages/Home";
 import Prototype from "./pages/Prototype";
 import Login from "./pages/Login";
+import CreateAccount from "./pages/CreateAccount";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ConfigProvider } from "react-avatar";
 import { ToastContainer } from "react-toastify";
-import CreateAccount from "./pages/CreateAccount";
 
 function App() {
   return (
