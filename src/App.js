@@ -23,7 +23,10 @@ function App() {
                   <Home />
                 </Route>
                 <ProtectedRoute path="/prototype" component={Prototype} />
-                <Route path="/createAccount" component={CreateAccount} />
+                <ProtectedRoute
+                  path="/createAccount"
+                  component={CreateAccount}
+                />
                 <Route path="/login">
                   <Login />
                 </Route>
