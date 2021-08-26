@@ -5,7 +5,6 @@ export const createAccountHolderObject = ({
   authType,
   authNo,
   DOB,
-  email,
 }) => {
   return {
     ifiID: "140793",
@@ -21,10 +20,7 @@ export const createAccountHolderObject = ({
       authData: { [authType]: authNo },
       authType: authType,
     },
-    vectors: [
-      { type: "e", value: email, isVerified: false },
-      { type: "p", value: contact, isVerified: false },
-    ],
+    vectors: [{ type: "p", value: contact, isVerified: false }],
     pops: [],
     customFields: { companyID: [1, 2, 3] },
     tags: [{ type: "vbo", value: "swiggy", isVerified: true }],

@@ -23,7 +23,6 @@ const CreateAccount = () => {
       authType,
       authNo,
       DOB,
-      email: authUser.email,
     });
     console.log(obj);
     createAccountHolder(obj)
