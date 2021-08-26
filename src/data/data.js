@@ -30,7 +30,38 @@ export const createAccoundHolder = ({
     vectors: [{ type: "e", value: email, isVerified: true }],
     pops: [],
     customFields: { companyID: [1, 2, 3] },
-    tags: [{ type: "vbo", value: "swiggy", isVerified: false }],
+    tags: [{ type: "vbo", value: "swiggy", isVerified: true }],
     source: "postman"
+  };
+};
+
+export const assignBundleToAccountHolderObject = ({ accountHolderID }) => {
+  return {
+    ifiID: "140793",
+    accountHolderID: accountHolderID,
+    name: "Fintechwalletbundle9adcf36"
+  };
+};
+
+export const transferMoneyObject = ({
+  requestID,
+  amount,
+  debitAccountID,
+  creditAccountID,
+  transferTime,
+  remarks
+}) => {
+  return {
+    requestID: requestID,
+    amount: {
+      currency: "INR",
+      amount: amount
+    },
+    transferCode: "ATLAS_P2M_AUTH",
+    debitAccountID: debitAccountID,
+    creditAccountID: creditAccountID,
+    transferTime: transferTime,
+    remarks: remarks,
+    attributes: {}
   };
 };
