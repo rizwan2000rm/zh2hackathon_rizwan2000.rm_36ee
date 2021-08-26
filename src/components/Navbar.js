@@ -292,6 +292,68 @@ const Navbar = () => {
           <CheckSquareOffset size={22} />
           <span className="hidden lg:block">History</span>
         </NavLink>
+
+        <Popup
+          trigger={
+            <button>
+              <div className="flex items-center flex-nowrap lg:w-36 gap-2 m-3 px-4 py-2 transition-all rounded-lg font-bold cursor-pointer hover:bg-red-300 hover:text-white hover:font-bold">
+                <PlusCircle size={22} />
+                <span className="hidden lg:block">Add funds</span>
+              </div>
+            </button>
+          }
+          overlayStyle={modalOverlayStyle}
+          modal
+          position="center center"
+        >
+          {(close) => (
+            <div className="border bg-white px-4 py-6 lg:px-12 lg:py-8">
+              <button
+                className="absolute right-0 top-0 h-12 w-12 text-3xl text-red-300 hover:opacity-80"
+                onClick={close}
+              >
+                &times;
+              </button>
+              <div className="w-64 sm:w-72 md:w-96 flex flex-col justify-around items-center">
+                <button className="my-5">
+                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center  w-64 p-4 bg-white relative overflow-hidden">
+                    <div className="w-4/6">
+                      <p className="text-green-500 text-xl font-medium">$10</p>
+                    </div>
+                  </div>
+                </button>
+                <button className="my-5">
+                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
+                    <div className="w-4/6 ">
+                      <p className="text-green-500 text-xl font-medium">$20</p>
+                    </div>
+                  </div>
+                </button>
+                <button className="my-5">
+                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
+                    <div className="w-4/6 ">
+                      <p className="text-green-500 text-xl font-medium">$50</p>
+                    </div>
+                  </div>
+                </button>
+                <button className="my-5">
+                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
+                    <div className="w-4/6">
+                      <p className="text-green-500 text-xl font-medium">$100</p>
+                    </div>
+                  </div>
+                </button>
+                <button className="my-5">
+                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
+                    <div className="w-4/6">
+                      <p className="text-green-500 text-xl font-medium">$200</p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
+        </Popup>
       </div>
     </>
   );
