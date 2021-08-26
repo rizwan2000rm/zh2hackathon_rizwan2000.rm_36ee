@@ -83,16 +83,18 @@ const Sign = () => {
                     auth.onAuthStateChanged((user) => {
                       //setUser(user);
                       setAuthUser(user);
-                      createUserProfileDocument(user, {
+                      const userRef = createUserProfileDocument(user, {
                         photoURL: user.photoURL,
                       });
-                      getUserById(user.uid).then((user) => {
-                        console.log(user.data());
-                        if (user.data().accountID === null || undefined) {
-                          history.push("/prototype");
-                        } else {
-                          history.push("/createAccount");
-                        }
+                      userRef.then((doc) => {
+                        getUserById(doc.id).then((user) => {
+                          console.log(user.data());
+                          if (user.data()?.accountID !== null || undefined) {
+                            history.push("/prototype");
+                          } else {
+                            history.push("/createAccount");
+                          }
+                        });
                       });
                     })
                   );
