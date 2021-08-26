@@ -12,7 +12,7 @@ const CreateAccount = () => {
     const obj = createAccountHolderObject({
       firstName: firstName,
       lastName: lastName,
-      aadhaarNo: authData
+      aadhaarNo: authData,
       // email: email,
     });
     console.log(obj);
@@ -28,7 +28,7 @@ const CreateAccount = () => {
             style={{
               backgroundImage: `url(
                 "https://source.unsplash.com/Mv9hjnEUHR4/600x800"
-              )`
+              )`,
             }}
           ></div>
         </div>
@@ -46,6 +46,7 @@ const CreateAccount = () => {
                 setFirstName(e.target.value);
               }}
             />
+
             <input
               type="text"
               placeholder="Last Name"
@@ -56,12 +57,30 @@ const CreateAccount = () => {
             />
             <input
               type="text"
-              placeholder="text"
+              placeholder="Contact"
               className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
               onChange={(e) => {
                 setAuthData(e.target.value);
               }}
             />
+
+            <select className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm">
+              <option value="Aadhar">Aadhar</option>
+              <option value="PAN">PAN</option>
+            </select>
+
+            <input
+              type="text"
+              placeholder="Aadhar/PAN number"
+              className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
+            />
+
+            <input
+              type="date"
+              placeholder="DOB"
+              className=" form-date w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
+            />
+
             <button
               type="submit"
               className="px-6 py-2 w-full mx-auto rounded-lg bg-blue-400 text-white text-sm hover:opacity-80"
