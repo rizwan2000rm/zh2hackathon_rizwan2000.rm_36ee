@@ -21,7 +21,7 @@ const DashboardGrid = () => {
         const newBills = snapshot.docs.map((doc) => {
           return {
             id: doc.id,
-            ...doc.data(),
+            ...doc.data()
           };
         });
         setActiveRequest(() => {

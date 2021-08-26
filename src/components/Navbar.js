@@ -3,22 +3,24 @@ import { NavLink } from "react-router-dom";
 import Popup from "reactjs-popup";
 import { toast } from "react-toastify";
 import AsyncSelect from "react-select/async";
+import { uid } from "uid";
 
 import { addBill, db } from "../firebase/firebase.utils";
 import AuthUserContext from "../context/AuthUserContext";
+import { transferMoney } from "../axios/index";
 
 import {
   House,
   PlusCircle,
   ListDashes,
-  CheckSquareOffset,
+  CheckSquareOffset
 } from "phosphor-react";
 import "react-toastify/dist/ReactToastify.css";
 import SplitteraLogo from "../assets/logos/SplitteraLogo";
 
 const modalOverlayStyle = {
   backgroundColor: "rgba(0, 0, 0, 0.2)",
-  backdropFilter: "blur(1px)",
+  backdropFilter: "blur(1px)"
 };
 
 const Navbar = () => {
@@ -58,7 +60,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       });
       return;
     }
@@ -70,7 +72,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       });
       return;
     }
@@ -83,7 +85,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       });
       return;
     }
@@ -102,7 +104,7 @@ const Navbar = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
+          progress: undefined
         });
       })
       .catch((err) => {
@@ -114,7 +116,7 @@ const Navbar = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
+          progress: undefined
         });
       });
   };
@@ -125,7 +127,7 @@ const Navbar = () => {
         .map((doc) => {
           return {
             value: doc.data().email,
-            label: doc.data().email,
+            label: doc.data().email
           };
         })
         //filtering the users which do not match the current authenticated user
@@ -143,9 +145,9 @@ const Navbar = () => {
         return {
           value: {
             name: doc.data().name,
-            accountID: doc.data().accountID,
+            accountID: doc.data().accountID
           },
-          label: doc.data().name,
+          label: doc.data().name
         };
       });
       if (!vendorInputValue) {
@@ -159,29 +161,45 @@ const Navbar = () => {
     });
   };
 
+  const addFunds = (amount) => {
+    transferMoney({
+      requestID: uid(),
+      amount: {
+        currency: "INR",
+        amount: amount
+      },
+      transferCode: "ATLAS_P2M_AUTH",
+      debitAccountID: process.env.REACT_APP_fundingAccountId,
+      creditAccountID: "783d6c40-d265-4164-ac92-bf668256db5e",
+      transferTime: 1574741608000,
+      remarks: "Funds Added",
+      attributes: {}
+    });
+  };
+
   const defaultVendorOptions = [
     {
       value: {
         name: "Sagar Restaurant",
-        accountID: "eed3940f-faaa-4cb5-ac09-44e4db3294ea",
+        accountID: "eed3940f-faaa-4cb5-ac09-44e4db3294ea"
       },
-      label: "Sagar Restaurant",
-    },
+      label: "Sagar Restaurant"
+    }
   ];
 
   const defaultOptions = [
     {
       value: "rizwan2000.rm@gmail.com",
-      label: "rizwan2000.rm@gmail.com",
+      label: "rizwan2000.rm@gmail.com"
     },
     {
       value: "saistashaikh2019@gmail.com",
-      label: "saistashaikh2019@gmail.com",
+      label: "saistashaikh2019@gmail.com"
     },
     {
       value: "salik.ansari6@gmail.com",
-      label: "salik.ansari6@gmail.com",
-    },
+      label: "salik.ansari6@gmail.com"
+    }
   ];
 
   return (
@@ -314,42 +332,64 @@ const Navbar = () => {
               >
                 &times;
               </button>
-              <div className="w-64 sm:w-72 md:w-96 flex flex-col justify-around items-center">
-                <button className="my-5">
-                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center  w-64 p-4 bg-white relative overflow-hidden">
-                    <div className="w-4/6">
-                      <p className="text-green-500 text-xl font-medium">$10</p>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 m-4 md:m-6 items-center">
+                <div
+                  class="shadow-lg cursor-pointer hover:shadow-2xl rounded-2xl w-56 p-4 bg-white relative overflow-hidden"
+                  onClick={() => addFunds(10)}
+                >
+                  <img
+                    alt="moto"
+                    src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                    class="absolute -right-20 -bottom-8 h-40 w-40 mb-4"
+                  />
+                  <div class="w-4/6">
+                    <p class="text-gray-800 text-lg font-medium mb-2">
+                      Lite Pack
+                    </p>
+                    <p class="text-gray-400 text-xs h-8 mr-2 mb-2">
+                      Split Bills remove hassle
+                    </p>
+                    <p class="text-indigo-500 text-xl font-medium">$10</p>
                   </div>
-                </button>
-                <button className="my-5">
-                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
-                    <div className="w-4/6 ">
-                      <p className="text-green-500 text-xl font-medium">$20</p>
-                    </div>
+                </div>
+                <div
+                  onClick={() => addFunds(29)}
+                  class="shadow-lg cursor-pointer hover:shadow-2xl rounded-2xl w-56 p-4 bg-white relative overflow-hidden"
+                >
+                  <img
+                    alt="moto"
+                    src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                    class="absolute -right-20 -bottom-8 h-40 w-40 mb-4"
+                  />
+                  <div class="w-4/6">
+                    <p class="text-gray-800 text-lg font-medium mb-2">
+                      Basic Pack
+                    </p>
+                    <p class="text-gray-400 text-xs h-8 mr-2 mb-2">
+                      Get Rewards every month
+                    </p>
+                    <p class="text-indigo-500 text-xl font-medium">$29</p>
                   </div>
-                </button>
-                <button className="my-5">
-                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
-                    <div className="w-4/6 ">
-                      <p className="text-green-500 text-xl font-medium">$50</p>
-                    </div>
+                </div>
+                <div
+                  onClick={() => addFunds(49)}
+                  class="shadow-lg cursor-pointer hover:shadow-2xl rounded-2xl w-56 p-4 bg-white relative overflow-hidden"
+                >
+                  <img
+                    alt="moto"
+                    src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                    class="absolute -right-20 -bottom-8 h-40 w-40 mb-4"
+                  />
+                  <div class="w-4/6">
+                    <p class="text-gray-800 text-lg font-medium mb-2">
+                      Premium Pack
+                    </p>
+                    <p class="text-gray-400 text-xs h-8 mr-2 mb-2">
+                      Guranteed Discounts with partners
+                    </p>
+                    <p class="text-indigo-500 text-xl font-medium">$49</p>
                   </div>
-                </button>
-                <button className="my-5">
-                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
-                    <div className="w-4/6">
-                      <p className="text-green-500 text-xl font-medium">$100</p>
-                    </div>
-                  </div>
-                </button>
-                <button className="my-5">
-                  <div className="shadow-lg rounded-2xl py-5 flex justify-center align-center w-64 p-4 bg-white relative overflow-hidden">
-                    <div className="w-4/6">
-                      <p className="text-green-500 text-xl font-medium">$200</p>
-                    </div>
-                  </div>
-                </button>
+                </div>
               </div>
             </div>
           )}

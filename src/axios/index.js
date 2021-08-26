@@ -1,4 +1,5 @@
 import AxiosInstance from "./instance";
+import { toast } from "react-toastify";
 
 // Make account holder for every user
 export const createAccountHolder = (payload) => {
@@ -29,14 +30,32 @@ export const assignBundleToAccountHolder = (payload) => {
 
 // Account To Account Transfer
 export const transferMoney = (payload) => {
-  AxiosInstance.post("/transfers", payload)
+  AxiosInstance.post("/transfer", payload)
     .then(function (response) {
       // handle success
       console.log(response);
+      toast.success("Funds Added", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
     })
     .catch(function (error) {
       // handle error
       console.log(error);
+      toast.success(error, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
     });
 };
 
