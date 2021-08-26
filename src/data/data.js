@@ -1,7 +1,10 @@
 export const createAccountHolderObject = ({
   firstName,
   lastName,
-  aadhaarNo,
+  contact,
+  authType,
+  authNo,
+  DOB,
   email,
 }) => {
   return {
@@ -15,11 +18,12 @@ export const createAccountHolderObject = ({
       kycStatus: "MINIMAL",
       kycStatusPostExpiry: "string",
       kycAttributes: {},
-      authData: { AADHAAR: aadhaarNo },
-      authType: "AADHAAR",
+      authData: { [authType]: authNo },
+      authType: authType,
     },
     vectors: [
-      { type: "e", value: "salik.ansari6@gmail.com", isVerified: false },
+      { type: "e", value: email, isVerified: false },
+      { type: "p", value: contact, isVerified: false },
     ],
     pops: [],
     customFields: { companyID: [1, 2, 3] },
@@ -28,11 +32,16 @@ export const createAccountHolderObject = ({
   };
 };
 
-export const assignBundleToAccountHolderObject = ({ accountHolderID }) => {
+export const getAccountIDObject = ({ accountHolderID, contact }) => {
   return {
     ifiID: "140793",
     accountHolderID: accountHolderID,
-    name: "Fintechwalletbundle9adcf36",
+    name: "Bundle 1",
+    BundleID: "1d8c1474-f148-42ff-95e1-555e2e5b3975",
+    disableCardFFCreation: false,
+    disableFFCreation: false,
+    disablePhoneFFCreation: false,
+    phoneNumber: contact,
   };
 };
 

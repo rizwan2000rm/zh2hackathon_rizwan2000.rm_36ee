@@ -1,22 +1,59 @@
-import React, { useState } from "react";
-import { createAccountHolder } from "../axios/index";
-import { createAccountHolderObject } from "../data/data";
+import React, { useContext, useState } from "react";
+import { createAccountHolder, getAccountID } from "../axios/index";
+import AuthUserContext from "../context/AuthUserContext";
+import { createAccountHolderObject, getAccountIDObject } from "../data/data";
+import { useHistory } from "react-router";
+import { updateUser } from "../firebase/firebase.utils";
 
 const CreateAccount = () => {
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [authData, setAuthData] = useState();
+  const [contact, setContact] = useState();
+  const [authType, setAuthType] = useState("AADHAAR");
+  const [authNo, setAuthNo] = useState();
+  const [DOB, setDOB] = useState();
+  const { authUser } = useContext(AuthUserContext);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const fullName = authUser.displayName.split(" ");
     const obj = createAccountHolderObject({
-      firstName: firstName,
-      lastName: lastName,
-      aadhaarNo: authData,
-      // email: email,
+      firstName: fullName[0],
+      lastName: fullName[1] ? fullName[1] : "",
+      contact,
+      authType,
+      authNo,
+      DOB,
+      email: authUser.email,
     });
     console.log(obj);
-    createAccountHolder(obj);
+    createAccountHolder(obj)
+      .then(function (response) {
+        const obj = getAccountIDObject({
+          accountHolderID: response.data.individualID,
+          contact: "+91" + contact,
+        });
+
+        getAccountID(obj)
+          .then(function (response) {
+            // handle success
+            console.log(response.data);
+            updateUser(authUser.uid, {
+              accountID: response.data.accounts[0].accountID,
+              accountHolderID: response.data.accounts[0].accountHolderID,
+            });
+            history.push("/prototype");
+          })
+          .catch(function (error) {
+            // handle error
+            //display toast error
+
+            console.log(error);
+          });
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   };
 
   return (
@@ -40,36 +77,26 @@ const CreateAccount = () => {
           >
             <input
               type="text"
-              placeholder="First Name"
-              className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
-              onChange={(e) => {
-                setFirstName(e.target.value);
-              }}
-            />
-
-            <input
-              type="text"
-              placeholder="Last Name"
-              className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
-              onChange={(e) => {
-                setLastName(e.target.value);
-              }}
-            />
-            <input
-              type="text"
+              value={contact}
               placeholder="Contact"
               className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
               onChange={(e) => {
-                setAuthData(e.target.value);
+                setContact(e.target.value);
               }}
             />
 
-            <select className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm">
-              <option value="Aadhar">Aadhar</option>
+            <select
+              value={authType}
+              onChange={(e) => setAuthType(e.target.value)}
+              className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
+            >
+              <option value="AADHAAR">Aadhar</option>
               <option value="PAN">PAN</option>
             </select>
 
             <input
+              value={authNo}
+              onChange={(e) => setAuthNo(e.target.value)}
               type="text"
               placeholder="Aadhar/PAN number"
               className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
@@ -77,6 +104,8 @@ const CreateAccount = () => {
 
             <input
               type="date"
+              value={DOB}
+              onChange={(e) => setDOB(e.target.value)}
               placeholder="DOB"
               className=" form-date w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
             />

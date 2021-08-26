@@ -4,6 +4,7 @@ import AuthUserContext from "../context/AuthUserContext";
 import {
   auth,
   createUserProfileDocument,
+  getUserById,
   signInWithGoogle,
 } from "../firebase/firebase.utils";
 
@@ -85,11 +86,13 @@ const Sign = () => {
                       createUserProfileDocument(user, {
                         photoURL: user.photoURL,
                       });
-                      if (user.accountId) {
-                        history.push("/prototype");
-                      } else {
-                        history.push("/createAccount");
-                      }
+                      getUserById(user.uid).then((user) => {
+                        if (user.data().accountID) {
+                          history.push("/prototype");
+                        } else {
+                          history.push("/createAccount");
+                        }
+                      });
                     })
                   );
                 }}

@@ -3,29 +3,13 @@ import { toast } from "react-toastify";
 
 // Make account holder for every user
 export const createAccountHolder = (payload) => {
-  AxiosInstance.post("/applications/newIndividual", payload)
-    .then(function (response) {
-      // handle success
-      console.log(response);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
+  return AxiosInstance.post("/applications/newIndividual", payload);
 };
 
 // Assign a bundle to every account holder
 // Will return accountID
-export const assignBundleToAccountHolder = (payload) => {
-  AxiosInstance.post(`/accountHolders/${payload.accountHolderID}`, payload)
-    .then(function (response) {
-      // handle success
-      console.log(response);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
+export const getAccountID = (payload) => {
+  return AxiosInstance.post(`/getAccountID`, payload);
 };
 
 // Account To Account Transfer
