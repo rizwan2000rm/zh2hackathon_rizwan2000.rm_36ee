@@ -89,7 +89,7 @@ const Sign = () => {
                       userRef.then((doc) => {
                         getUserById(doc.id).then((user) => {
                           console.log(user.data());
-                          if (user.data()?.accountID !== null || undefined) {
+                          if (user.data().accountID) {
                             history.push("/prototype");
                           } else {
                             history.push("/createAccount");
