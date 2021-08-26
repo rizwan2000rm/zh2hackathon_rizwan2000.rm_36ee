@@ -34,8 +34,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        accountHolderId: null,
-        accountId: null,
+        accountHolderID: null,
+        accountID: null,
         ...additionalData,
       });
     } catch (error) {
