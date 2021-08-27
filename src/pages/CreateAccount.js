@@ -8,17 +8,56 @@ import { toast } from "react-toastify";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const CreateAccount = () => {
-  const [contact, setContact] = useState();
+  const [contact, setContact] = useState("");
   const [authType, setAuthType] = useState("AADHAAR");
-  const [authNo, setAuthNo] = useState();
-  const [DOB, setDOB] = useState();
+  const [authNo, setAuthNo] = useState("");
+  const [DOB, setDOB] = useState("");
   const [loading, setLoading] = useState(false);
   const { authUser } = useContext(AuthUserContext);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
+    if (contact.length !== 10) {
+      toast.warn("Contact should be of 10 digits", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+    if (authNo.length === 0) {
+      toast.warn("Aadhaar/PAN should not be empty", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+    if (authType === "PAN") {
+      var regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
+      if (!regex.test(authNo.toUpperCase())) {
+        toast.warn("PAN should be in correct format", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return;
+      }
+    }
+
     const fullName = authUser.displayName.split(" ");
     const obj = createAccountHolderObject({
       firstName: fullName[0],
@@ -26,14 +65,15 @@ const CreateAccount = () => {
       contact,
       authType,
       authNo,
-      DOB
+      DOB,
     });
     console.log(obj);
+    setLoading(true);
     createAccountHolder(obj)
       .then(function (response) {
         const obj = getAccountIDObject({
           accountHolderID: response.data.individualID,
-          contact: "+91" + contact
+          contact: "+91" + contact,
         });
 
         getAccountID(obj)
@@ -48,7 +88,7 @@ const CreateAccount = () => {
                   closeOnClick: true,
                   pauseOnHover: true,
                   draggable: true,
-                  progress: undefined
+                  progress: undefined,
                 })
               : toast.error(response.data.message, {
                   position: "bottom-right",
@@ -57,11 +97,11 @@ const CreateAccount = () => {
                   closeOnClick: true,
                   pauseOnHover: true,
                   draggable: true,
-                  progress: undefined
+                  progress: undefined,
                 });
             updateUser(authUser.uid, {
               accountID: response.data.accounts[0].accountID,
-              accountHolderID: response.data.accounts[0].accountHolderID
+              accountHolderID: response.data.accounts[0].accountHolderID,
             });
             setLoading(false);
             history.push("/prototype");
@@ -76,7 +116,7 @@ const CreateAccount = () => {
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
-              progress: undefined
+              progress: undefined,
             });
             setLoading(false);
           });
@@ -91,7 +131,7 @@ const CreateAccount = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined
+          progress: undefined,
         });
         setLoading(false);
       });
@@ -106,7 +146,7 @@ const CreateAccount = () => {
             style={{
               backgroundImage: `url(
                 "https://source.unsplash.com/Mv9hjnEUHR4/600x800"
-              )`
+              )`,
             }}
           ></div>
         </div>
@@ -117,7 +157,7 @@ const CreateAccount = () => {
             onSubmit={(e) => handleSubmit(e)}
           >
             <input
-              type="text"
+              type="number"
               value={contact}
               placeholder="Contact"
               className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
