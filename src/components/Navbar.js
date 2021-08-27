@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import AsyncSelect from "react-select/async";
 import { uid } from "uid";
 
-import { addBill, db } from "../firebase/firebase.utils";
+import { addBill, getUserById, db } from "../firebase/firebase.utils";
 import AuthUserContext from "../context/AuthUserContext";
 import { transferMoney } from "../axios/index";
 
@@ -162,18 +162,46 @@ const Navbar = () => {
   };
 
   const addFunds = (amount) => {
-    transferMoney({
-      requestID: uid(),
-      amount: {
-        currency: "INR",
-        amount: amount
-      },
-      transferCode: "ATLAS_P2M_AUTH",
-      debitAccountID: process.env.REACT_APP_fundingAccountId,
-      creditAccountID: "783d6c40-d265-4164-ac92-bf668256db5e",
-      transferTime: 1574741608000,
-      remarks: "Funds Added",
-      attributes: {}
+    getUserById(authUser.uid).then((user) => {
+      transferMoney({
+        requestID: uid(),
+        amount: {
+          currency: "INR",
+          amount: amount
+        },
+        transferCode: "ATLAS_P2M_AUTH",
+        debitAccountID: process.env.REACT_APP_fundingAccountId,
+        creditAccountID: user.data().accountID,
+        transferTime: 1574741608000,
+        remarks: "Funds Added",
+        attributes: {}
+      })
+        .then(function (response) {
+          // handle success
+          console.log(response);
+          toast.success("Funds Added", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+          toast.error(error, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
+        });
     });
   };
 
