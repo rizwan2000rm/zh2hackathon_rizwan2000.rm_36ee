@@ -4,17 +4,21 @@ import AuthUserContext from "../context/AuthUserContext";
 import { createAccountHolderObject, getAccountIDObject } from "../data/data";
 import { useHistory } from "react-router";
 import { updateUser } from "../firebase/firebase.utils";
+import { toast } from "react-toastify";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const CreateAccount = () => {
   const [contact, setContact] = useState();
   const [authType, setAuthType] = useState("AADHAAR");
   const [authNo, setAuthNo] = useState();
   const [DOB, setDOB] = useState();
+  const [loading, setLoading] = useState(false);
   const { authUser } = useContext(AuthUserContext);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const fullName = authUser.displayName.split(" ");
     const obj = createAccountHolderObject({
       firstName: fullName[0],
@@ -22,36 +26,74 @@ const CreateAccount = () => {
       contact,
       authType,
       authNo,
-      DOB,
+      DOB
     });
     console.log(obj);
     createAccountHolder(obj)
       .then(function (response) {
         const obj = getAccountIDObject({
           accountHolderID: response.data.individualID,
-          contact: "+91" + contact,
+          contact: "+91" + contact
         });
 
         getAccountID(obj)
           .then(function (response) {
             // handle success
-            console.log(response.data);
+            console.log(response);
+            response.data.name !== "Error"
+              ? toast.success("Account Created Successfully", {
+                  position: "bottom-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined
+                })
+              : toast.error(response.data.message, {
+                  position: "bottom-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined
+                });
             updateUser(authUser.uid, {
               accountID: response.data.accounts[0].accountID,
-              accountHolderID: response.data.accounts[0].accountHolderID,
+              accountHolderID: response.data.accounts[0].accountHolderID
             });
+            setLoading(false);
             history.push("/prototype");
           })
           .catch(function (error) {
             // handle error
-            //display toast error
-
             console.log(error);
+            toast.error(error, {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined
+            });
+            setLoading(false);
           });
       })
       .catch(function (error) {
         // handle error
         console.log(error);
+        toast.error(error, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+        setLoading(false);
       });
   };
 
@@ -64,7 +106,7 @@ const CreateAccount = () => {
             style={{
               backgroundImage: `url(
                 "https://source.unsplash.com/Mv9hjnEUHR4/600x800"
-              )`,
+              )`
             }}
           ></div>
         </div>
@@ -111,9 +153,10 @@ const CreateAccount = () => {
 
             <button
               type="submit"
-              className="px-6 py-2 w-full mx-auto rounded-lg bg-blue-400 text-white text-sm hover:opacity-80"
+              className="px-6 py-2 w-full flex items-center justify-center gap-2 mx-auto rounded-lg bg-blue-400 text-white text-sm hover:opacity-80"
             >
-              Create Account
+              <ClipLoader color={"#fff"} size={20} loading={loading} />
+              <span>Create Account</span>
             </button>
           </form>
         </div>

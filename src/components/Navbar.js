@@ -256,17 +256,8 @@ const Navbar = () => {
                     // isMulti
                     value={vendor}
                     inputValue={vendorInputValue}
-                    placeholder="Enter users email to split with..."
+                    placeholder="Search for partner vendors..."
                     className="w-full mb-6 bg-gray-100 rounded-lg shadow-sm text-sm"
-                  />
-                  <input
-                    value={amount}
-                    onChange={(e) => {
-                      setAmount(e.target.value);
-                    }}
-                    type="number"
-                    placeholder="Amount"
-                    className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
                   />
                   <AsyncSelect
                     // components={components}
@@ -280,8 +271,17 @@ const Navbar = () => {
                     isMulti
                     value={value}
                     inputValue={inputValue}
-                    placeholder="Enter users email to split with..."
+                    placeholder="Search for registered users with email to split bill..."
                     className="w-full mb-6 bg-gray-100 rounded-lg shadow-sm text-sm"
+                  />
+                  <input
+                    value={amount}
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                    }}
+                    type="number"
+                    placeholder="Amount"
+                    className="w-full mb-6 px-4 h-10 bg-gray-100 rounded-lg shadow-sm focus:outline-none focus:ring text-sm"
                   />
                   <button
                     type="submit"
