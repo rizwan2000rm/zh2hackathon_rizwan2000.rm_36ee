@@ -105,6 +105,20 @@ export const payBill = async (updatedUsers, billId, payingUserId, mySplit) => {
       })
         .then((response) => {
           console.log(response);
+          if (response.data.name === "Error") {
+            toast.error("Insufficient Funds", {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+
+            return;
+          }
+
           if (response.status === 200) {
             toast.success("Amount Paid", {
               position: "bottom-right",
