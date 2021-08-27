@@ -13,14 +13,14 @@ import {
   House,
   PlusCircle,
   ListDashes,
-  CheckSquareOffset
+  CheckSquareOffset,
 } from "phosphor-react";
 import "react-toastify/dist/ReactToastify.css";
 import SplitteraLogo from "../assets/logos/SplitteraLogo";
 
 const modalOverlayStyle = {
   backgroundColor: "rgba(0, 0, 0, 0.2)",
-  backdropFilter: "blur(1px)"
+  backdropFilter: "blur(1px)",
 };
 
 const Navbar = () => {
@@ -60,7 +60,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
       return;
     }
@@ -72,7 +72,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
       return;
     }
@@ -85,7 +85,7 @@ const Navbar = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
       return;
     }
@@ -104,7 +104,7 @@ const Navbar = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined
+          progress: undefined,
         });
       })
       .catch((err) => {
@@ -116,7 +116,7 @@ const Navbar = () => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined
+          progress: undefined,
         });
       });
   };
@@ -127,7 +127,7 @@ const Navbar = () => {
         .map((doc) => {
           return {
             value: doc.data().email,
-            label: doc.data().email
+            label: doc.data().email,
           };
         })
         //filtering the users which do not match the current authenticated user
@@ -145,9 +145,9 @@ const Navbar = () => {
         return {
           value: {
             name: doc.data().name,
-            accountID: doc.data().accountID
+            accountID: doc.data().accountID,
           },
-          label: doc.data().name
+          label: doc.data().name,
         };
       });
       if (!vendorInputValue) {
@@ -167,14 +167,14 @@ const Navbar = () => {
         requestID: uid(),
         amount: {
           currency: "INR",
-          amount: amount
+          amount: amount,
         },
         transferCode: "ATLAS_P2M_AUTH",
         debitAccountID: process.env.REACT_APP_fundingAccountId,
         creditAccountID: user.data().accountID,
         transferTime: 1574741608000,
         remarks: "Funds Added",
-        attributes: {}
+        attributes: {},
       })
         .then(function (response) {
           // handle success
@@ -186,7 +186,7 @@ const Navbar = () => {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            progress: undefined
+            progress: undefined,
           });
         })
         .catch(function (error) {
@@ -199,7 +199,7 @@ const Navbar = () => {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            progress: undefined
+            progress: undefined,
           });
         });
     });
@@ -209,25 +209,25 @@ const Navbar = () => {
     {
       value: {
         name: "Sagar Restaurant",
-        accountID: "eed3940f-faaa-4cb5-ac09-44e4db3294ea"
+        accountID: "eed3940f-faaa-4cb5-ac09-44e4db3294ea",
       },
-      label: "Sagar Restaurant"
-    }
+      label: "Sagar Restaurant",
+    },
   ];
 
   const defaultOptions = [
     {
       value: "rizwan2000.rm@gmail.com",
-      label: "rizwan2000.rm@gmail.com"
+      label: "rizwan2000.rm@gmail.com",
     },
     {
       value: "saistashaikh2019@gmail.com",
-      label: "saistashaikh2019@gmail.com"
+      label: "saistashaikh2019@gmail.com",
     },
     {
       value: "salik.ansari6@gmail.com",
-      label: "salik.ansari6@gmail.com"
-    }
+      label: "salik.ansari6@gmail.com",
+    },
   ];
 
   return (
@@ -422,6 +422,14 @@ const Navbar = () => {
             </div>
           )}
         </Popup>
+        <NavLink
+          to="/prototype/checkBalance"
+          activeClassName="bg-red-300 text-white"
+          className="flex items-center flex-nowrap lg:w-36 gap-2 m-3 px-4 py-2 transition-all rounded-lg font-bold cursor-pointer hover:bg-red-300 hover:text-white hover:font-bold"
+        >
+          <ListDashes size={22} />
+          <span className="hidden lg:block"> Check Balance</span>
+        </NavLink>
       </div>
     </>
   );

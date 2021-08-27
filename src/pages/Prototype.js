@@ -5,6 +5,7 @@ import TopBar from "../components/TopBar";
 import { Switch, Route } from "react-router-dom";
 import SplitRequests from "./SplitRequests";
 import History from "./History";
+import CheckBalance from "./CheckBalance";
 
 const Prototype = () => {
   return (
@@ -18,6 +19,7 @@ const Prototype = () => {
           <Route path="/prototype/" exact component={DashboardGrid} />
           <Route path="/prototype/splitreqs" component={SplitRequests} />
           <Route path="/prototype/history" component={History} />
+          <Route path="/prototype/checkBalance" component={CheckBalance} />
         </Switch>
       </div>
     </div>

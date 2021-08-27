@@ -11,7 +11,7 @@ var firebaseConfig = {
   projectId: "oreo-e0436",
   storageBucket: "oreo-e0436.appspot.com",
   messagingSenderId: "518701931556",
-  appId: "1:518701931556:web:3488def6c2040d31e18cb1"
+  appId: "1:518701931556:web:3488def6c2040d31e18cb1",
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -37,7 +37,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        ...additionalData
+        ...additionalData,
       });
     } catch (error) {
       console.log("error creating user", error.message);
@@ -72,8 +72,8 @@ export const addBill = async (vendor, amount, userEmails, authUser) => {
       users: [...userEmails, authUser.email].map((userEmail) => ({
         amount: splitAmount,
         email: userEmail,
-        paid: false
-      }))
+        paid: false,
+      })),
     });
   }
 };
@@ -87,46 +87,50 @@ export const getUserById = async (creatorId) => {
   return db.collection("users").doc(creatorId).get();
 };
 
-export const payBill = async (updatedUsers, billId, payingUserId) => {
+export const payBill = async (updatedUsers, billId, payingUserId, mySplit) => {
   getBill(billId).then((bill) => {
     getUserById(payingUserId).then((user) => {
       transferMoney({
         requestID: uid(),
         amount: {
           currency: "INR",
-          amount: bill.data().totalAmount
+          amount: mySplit,
         },
         transferCode: "ATLAS_P2M_AUTH",
         debitAccountID: user.data().accountID,
         creditAccountID: bill.data().accountID,
         transferTime: 1574741608000,
         remarks: "Split Recieved",
-        attributes: {}
+        attributes: {},
       })
         .then((response) => {
           console.log(response);
-          toast.success("Amount Paid", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined
-          });
-          return db.collection("bills").doc(billId).update({
-            users: updatedUsers
-          });
+          if (response.status === 200) {
+            toast.success("Amount Paid", {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            return db.collection("bills").doc(billId).update({
+              users: updatedUsers,
+            });
+          } else {
+            throw new Error(response.data);
+          }
         })
         .catch((error) => {
-          toast.success(error, {
+          toast.error(error, {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            progress: undefined
+            progress: undefined,
           });
           console.log(error);
         });
@@ -140,7 +144,7 @@ export const declineBill = async (billId, authUser, updatedUsers) => {
     .doc(billId)
     .update({
       userEmails: firebase.firestore.FieldValue.arrayRemove(authUser.email),
-      users: updatedUsers
+      users: updatedUsers,
     });
 };
 

@@ -5,7 +5,7 @@ import {
   payBill,
   declineBill,
   getUserById,
-  getUsersByEmail
+  getUsersByEmail,
 } from "../firebase/firebase.utils";
 import { toast } from "react-toastify";
 import Popup from "reactjs-popup";
@@ -19,7 +19,7 @@ const SplitBillReq = ({ activeRequest, setActiveRequest, history }) => {
 
   const modalOverlayStyle = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    backdropFilter: "blur(1px)"
+    backdropFilter: "blur(1px)",
   };
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const SplitBillReq = ({ activeRequest, setActiveRequest, history }) => {
         const newSplitters = snapshot.docs.map((doc) => {
           return {
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
           };
         });
         setSplitters(newSplitters);
@@ -102,7 +102,7 @@ const SplitBillReq = ({ activeRequest, setActiveRequest, history }) => {
                             ...user,
                             amount:
                               activeRequest.totalAmount /
-                              (activeRequest.users.length - 1)
+                              (activeRequest.users.length - 1),
                           };
                         });
 
@@ -118,7 +118,7 @@ const SplitBillReq = ({ activeRequest, setActiveRequest, history }) => {
                           closeOnClick: true,
                           pauseOnHover: true,
                           draggable: true,
-                          progress: undefined
+                          progress: undefined,
                         });
                       });
                     }}
@@ -137,12 +137,17 @@ const SplitBillReq = ({ activeRequest, setActiveRequest, history }) => {
                         }
                         return {
                           ...user,
-                          paid: true
+                          paid: true,
                         };
                       });
 
                       //Updating the bill in firebase which updates the whole document
-                      payBill(updatedUsers, activeRequest.id, authUser.uid);
+                      payBill(
+                        updatedUsers,
+                        activeRequest.id,
+                        authUser.uid,
+                        Math.ceil(mySplit)
+                      );
                       // .then(() => {
                       //   toast.success("Payment Successful", {
                       //     position: "bottom-right",

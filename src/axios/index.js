@@ -15,3 +15,7 @@ export const getAccountID = (payload) => {
 export const transferMoney = (payload) => {
   return AxiosInstance.post("/transfer", payload);
 };
+
+export const checkBalance = (accountID) => {
+  return AxiosInstance.get(`/accounts/${accountID}/balance`);
+};
